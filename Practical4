@@ -1,0 +1,198 @@
+1.       
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class AppendTextFile {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter file name: ");
+        String fileName = sc.nextLine();
+
+        System.out.print("Enter text to append: ");
+        String text = sc.nextLine();
+
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(fileName, true); // true = append mode
+            writer.write(text + "\n"); // write text with new line
+            System.out.println("Text appended successfully!");
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close(); // close the file
+                }
+            } catch (IOException e) {
+                System.out.println("Error closing the file: " + e.getMessage());
+            }
+        }
+
+        sc.close();
+    }
+}
+
+2.
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class BytesWrittenExample {
+    public static void main(String[] args) {
+        String fileName = "filename.txt"; // your file name
+        int totalBytes = 0; // To track bytes written
+
+        try {
+            // Create FileOutputStream wrapped in DataOutputStream
+            FileOutputStream fos = new FileOutputStream(fileName);
+            DataOutputStream dos = new DataOutputStream(fos);
+
+            // Writing different types of data
+            dos.writeInt(100);       // 4 bytes
+            totalBytes += 4;
+
+            dos.writeDouble(25.75);  // 8 bytes
+            totalBytes += 8;
+
+            dos.writeBoolean(true);  // 1 byte
+            totalBytes += 1;
+
+            dos.writeUTF("Hello");   // 2 bytes for length + 2 bytes per char
+            totalBytes += 2 + "Hello".length() * 2;
+
+            System.out.println("Data written successfully to " + fileName);
+            System.out.println("Total bytes written: " + totalBytes);
+
+            // Close streams
+            dos.close();
+            fos.close();
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+
+3.
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class CopyFile {
+    public static void main(String[] args) {
+        String sourceFile = "source.txt";  // file to read from
+        String destFile = "destination.txt"; // file to write to
+
+        FileReader fr = null;
+        FileWriter fw = null;
+
+        try {
+            fr = new FileReader(sourceFile);
+            fw = new FileWriter(destFile);
+
+            int c;
+            while ((c = fr.read()) != -1) {  // read character by character
+                fw.write(c);                 // write character to destination
+            }
+
+            System.out.println("File copied successfully!");
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (fr != null) fr.close();
+                if (fw != null) fw.close();
+            } catch (IOException e) {
+                System.out.println("Error closing file: " + e.getMessage());
+            }
+        }
+    }
+}
+
+4.
+import java.io.File;
+
+public class FileAttributes {
+    public static void main(String[] args) {
+        String fileName = "filename.txt"; // replace with your file name
+        File file = new File(fileName);
+
+        if (file.exists()) {  // check if file exists
+            System.out.println("File Name: " + file.getName());
+            System.out.println("Absolute Path: " + file.getAbsolutePath());
+            System.out.println("Writable: " + file.canWrite());
+            System.out.println("Readable: " + file.canRead());
+            System.out.println("File Size in bytes: " + file.length());
+            System.out.println("Is Directory: " + file.isDirectory());
+            System.out.println("Is File: " + file.isFile());
+        } else {
+            System.out.println("File does not exist.");
+        }
+    }
+}
+
+5.
+import java.io.*;
+import java.util.*;
+
+class StudentRecord {
+    String name;
+    int maths, physics, chemistry;
+
+    public StudentRecord(String name, int maths, int physics, int chemistry) {
+        this.name = name;
+        this.maths = maths;
+        this.physics = physics;
+        this.chemistry = chemistry;
+    }
+
+    public int getTotalMarks() {
+        return maths + physics + chemistry;
+    }
+}
+
+public class ReadCSVtoCollection {
+    public static void main(String[] args) {
+        String fileName = "C:\\Users\\vaish\\OneDrive\\Documents\\5th sem\\java\\pract2\\src\\student1.csv";
+        List<StudentRecord> students = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            br.readLine(); // skip header line
+
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+
+                // Ensure there are at least 8 columns (based on your CSV structure)
+                if (data.length < 8) continue;
+
+                try {
+                    String name = data[1].trim(); // Name column
+                    int maths = Integer.parseInt(data[5].trim()); // Maths column
+                    int physics = Integer.parseInt(data[6].trim()); // Physics column
+                    int chemistry = Integer.parseInt(data[7].trim()); // Chemistry column
+
+                    students.add(new StudentRecord(name, maths, physics, chemistry));
+                } catch (NumberFormatException e) {
+                    System.out.println("Skipping invalid row: " + Arrays.toString(data));
+                }
+            }
+
+            // Display name + total marks
+            System.out.println("\nName\t\tTotal Marks");
+            System.out.println("---------------------------------");
+            for (StudentRecord s : students) {
+                System.out.println(s.name + "\t\t" + s.getTotalMarks());
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+}
+ 
+
+
