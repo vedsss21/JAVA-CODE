@@ -1,0 +1,108 @@
+Problem Def. 1: 
+// Base class
+class Vehicle { 
+String brand;
+String model; 
+public void displayInfo() { 
+System.out.println("Brand: " + brand); 
+System.out.println("Model: " + model); } 
+} 
+// Derived class 1
+class Car extends Vehicle {
+int numberOfDoors; 
+// Overriding the method 
+@Override 
+public void displayInfo() {
+super.displayInfo(); 
+// Calls the parent's method 
+System.out.println("Number of Doors: " + numberOfDoors); 
+} 
+} 
+// Derived class 2 
+class Motorcycle extends Vehicle { boolean hasCarrier; 
+// Overriding the method 
+@Override 
+public void displayInfo() { 
+ 
+super.displayInfo(); 
+// Calls the parent's method 
+System.out.println("Has Carrier: " + hasCarrier); 
+} 
+} 
+// Main class to test everything
+public class VehicleTest { 
+public static void main(String[] args) { 
+// Create a Car object Car myCar = new Car();
+myCar.brand = "Toyota";
+myCar.model = "Camry";
+myCar.numberOfDoors = 4; 
+// Create a Motorcycle object 
+Motorcycle myBike = new Motorcycle();
+myBike.brand = "Honda"; 
+myBike.model = "CBR";
+myBike.hasCarrier = false; 
+// Display info 
+System.out.println("--- Car Information ---");
+myCar.displayInfo(); 
+System.out.println("\n--- Motorcycle Information ---");
+myBike.displayInfo(); 
+} 
+} 
+Problem Def. 2: 
+// Abstract class Notification 
+abstract class Notification {
+// Abstract method 
+abstract void send(String to, String msg); 
+// Normal method 
+String getType() { return this.getClass().getSimpleName();
+// returns class name 
+like EmailNotification 
+} 
+} 
+ 
+// Derived class: Email 
+class EmailNotification extends Notification { 
+@Override 
+void send(String to, String msg) { 
+System.out.println("Sending EMAIL to " + to + ": " + msg); 
+} 
+} 
+ 
+// Derived class: SMS 
+class SMSNotification extends Notification { 
+@Override 
+void send(String to, String msg) { 
+System.out.println("Sending SMS to " + to + ": " + msg); 
+} 
+} 
+ 
+// Derived class:
+Push Notification class PushNotification extends Notification { 
+@Override 
+void send(String to, String msg) { 
+System.out.println("Sending PUSH Notification to " + to + ": 
+" + msg); 
+} 
+} 
+ 
+// Service class 
+class NotificationService { void notifyUser(Notification notification, String to, String msg) 
+{ 
+System.out.println("Notification Type: " + 
+notification.getType()); 
+notification.send(to, msg);}
+}
+// Main class to test 
+public class Main {public static void main(String[] args) 
+{
+NotificationService service = new NotificationService();
+Notification email = new EmailNotification();
+Notification sms = new SMSNotification(); 
+Notification push = new PushNotification();
+service.notifyUser(email, "user@example.com", "Hello via Email!");
+service.notifyUser(sms, "9876543210", "Hello via SMS!"); 
+service.notifyUser(push, "User123", "Hello via PushNotification!");
+  }
+}
+ 
+ 
